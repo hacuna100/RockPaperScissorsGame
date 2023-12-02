@@ -1,0 +1,188 @@
+<!-- This is a simple Rock Paper Scissors game that tracks your wins, loses, and draws.
+It will handle input errors and check for case sensitivity to prevent the code from breaking. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Rock Paper Scissors Game</title>
+  <!-- This is used to center the display page -->
+  <style>
+    .center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    html, body {
+      height: 100%;
+    }
+    html {
+      display: table;
+      margin: auto;
+    }
+    body {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <b>
+    The Rock Paper Scissors Game
+  </b>
+  <p>
+    Please enter Rock, Paper, or Scissors and click Shoot to play against the bot
+  </p>
+  <!-- Label used for the player to input their choice -->
+  <label for="pSelect"><input type="text" id="pSelect" name="pSelect"></label>
+  <br></br>
+  <!-- Will call the playRPS() function to execute the game -->
+  <button onclick="playRPS()">Submit</button>
+  <br></br>
+  <!-- a tracker for how many wins, loses, and draws the player has for that session -->
+  <table class="center">
+    <tr>
+      <th>Wins</th>
+      <th>Loses</th>
+      <th>Draws</th>
+    </tr>
+    <tr>
+      <td id="wins"></td>
+      <td id="loses"></td>
+      <td id="draws"></td>
+    </tr>
+  </table>
+  <br></br>
+  <!-- displays the results of the game (red error message if incorrect input from player) -->
+    <b>RESULTS</b>
+    <p id="results"></p>
+  <script>
+    // vars that store messages for the game
+    const errorMesg = "ERROR: Please type in either Rock, Paper, Or Scissors";
+    const winMesg = "You Win!";
+    const loseMesg = "You Lose";
+    const drawMesg = "Its a Draw!";
+    // vars for the counters
+    let winCnt = 0;
+    let loseCnt = 0;
+    let drawCnt = 0;
+
+    // the function that executes the game
+    function playRPS()
+    {
+      // assigns the value from the user to pSelection
+      let pSelection = document.getElementById('pSelect').value;
+      // defaults the message to black if there was an error message before
+      document.getElementById("results").style.color = "black";
+
+      // ensures player input is all lowercase for validations
+      pSelection = pSelection.toLowerCase();
+
+      // randomly selects a choice from the computer
+      function getComputerChoice()
+      {
+        const choice = Math.floor(Math.random() * 3);
+        switch (choice)
+        {
+          case 0:
+            return "Rock";
+            break;
+          case 1:
+            return "Paper";
+            break;
+          case 2:
+            return "Scissors";
+        }
+      }
+
+      // assigns selection from computer to cSelection
+      const cSelection = getComputerChoice();
+
+      // compares the user and computers choice and evalutes who won
+      function round(playerSelection, computerSelection)
+      {
+        let pSelect = playerSelection;
+        let cSelect = computerSelection;
+
+        if (pSelect == "rock")
+        {
+          switch (cSelect)
+          {
+            case "Rock":
+              return drawMesg;
+              break;
+            case "Paper":
+              return loseMesg;
+              break;
+            case "Scissors":
+              return winMesg;
+              break;
+          }
+        }
+        else if (pSelect == "paper")
+        {
+         switch (cSelect)
+          {
+            case "Paper":
+              return drawMesg;
+              break;
+            case "Scissors":
+              return loseMesg;
+              break;
+            case "Rock":
+              return winMesg;
+              break;
+          }
+        }
+        else if (pSelect == "scissors")
+        {
+          switch (cSelect)
+          {
+            case "Scissors":
+              return drawMesg;
+              break;
+            case "Rock":
+              return loseMesg;
+              break;
+            case "Paper":
+              return winMesg;
+              break;
+          }
+        }
+        else
+        {
+          return errorMesg;
+        }
+      }
+
+      // stores the round result to display for the user
+      let result = round(pSelection, cSelection);
+
+      // counts based on the result of the round
+      if (result == winMesg)
+      {
+        winCnt++;
+      }
+      else if (result == loseMesg)
+      {
+        loseCnt++;
+      }
+      else if (result == drawMesg)
+      {
+        drawCnt++;
+      }
+      else
+      {
+        // error validation formatting
+        document.getElementById("results").style.color = "red";
+      }
+
+      // changes values and displays results to the user
+      document.getElementById("results").innerText = result;
+      document.getElementById("wins").innerText = winCnt;
+      document.getElementById("loses").innerText = loseCnt;
+      document.getElementById("draws").innerText = drawCnt;
+    }
+  </script>
+</body>
+</html>
